@@ -98,7 +98,7 @@ Check the structure of each data.frame and use the `summary` function to begin
 exploring the data. Are there any NA values? What 
 differences do you notice between the structure of the two data frames.
 
-We have three Na's in County_df in the Income, Income Err, & child poverty variables. There is a large size difference between the two data frames, County_df is 3142 rows in length while County_Mi is only 83 rows in length. This County Df's data will be easier to oberve statistically with such a large sample when comparing to County_MI. Other than those differences both data sets compare populations based on race, population size, transit availibility, Income, Gender, & and type of employment. 
+We have three Na's in County_df in the Income, Income Err, & child poverty variables. There is a large size difference between the two data frames, County_df is 3142 rows in length while County_Mi is only 83 rows in length. This County Df's data will be easier to oberve statistically with such a large sample when comparing to County_MI (as sample size increases the distribution assumes an ever more normal shape). Other than those differences both data sets compare populations based on race, population size, transit availibility, Income, Gender, & and type of employment. 
 
 ```{r}
 summary(county_df)
@@ -119,17 +119,24 @@ income for the entire US.
 
 Write a short paragraph describing the distribution of median incomes.
 
+When looking at the histogram, one can see that it is skewed off to the right which represent wealthier counties. Most counties fall in the $25,0000-$75,000 range. The boxplot continues this trend, the median and first three quartiles are tightly grouped while there is a longer upper tail where the wealthier counties are skewing the distribution. The density plot presents the same information that the histogram did but in a different asthetic. The violin graph shows that the vast majority of counties fall into the middle around the $45,000 -$50,000 mark with wealthier counties skwing the distribution upward.
+
 ```{r}
-# ggplot(???) + geom_histogram(???)
+ggplot(data=county_df) + geom_histogram(aes(x=county_df$Income),bins = 60,na.rm = TRUE) + labs(x = "Median Income")
+ggplot(data=county_df) + geom_boxplot(aes(y=county_df$Income, x=""),na.rm = TRUE) + labs(y = "Median Income") + theme(axis.title.x = element_blank())
+ggplot(data=county_df) + geom_density(aes(x = county_df$Income),fill="grey50",na.rm = TRUE)  + labs(x = "Median Income")
+ggplot(data=county_df) + geom_violin(aes(y=county_df$Income, x=""),na.rm = TRUE) + labs(x = "Median Income")
 ```
 
 ### Problem 3 - Histogram of total population
 
 Create a histogram of total population for counties in the US.
 
-```{r histo_totpop}
+```{r}
+ggplot(data = county_df) + geom_histogram(aes(x=county_df$TotalPop),na.rm = TRUE, bins = 30) + labs(x="Total Population")
 
 ```
+
 
 Repeat the histogram about but make the following style changes to the plot.
 
@@ -139,16 +146,33 @@ Repeat the histogram about but make the following style changes to the plot.
 * Change the colors of the bars to something other than the default black
 
 ```{r histo_stylechanges}
+ggplot(data = county_df) + geom_histogram(aes(x=county_df$TotalPop),fill="darkcyan",na.rm = TRUE, bins = 30) + labs(x="Total Population", y = "Number of Counties") + ggtitle("Distribution of population for US counties")
 
 ```
 
 **Hacker Extra** - Also create a kernel density plot overlaid on a histogram of
 Income. 
 
+The code came from the following tutorial on github: http://bradleyboehmke.github.io/tutorials/histograms
+
 Repeat the histogram but only for counties with less than 2.5 million people.
 
 ```{r histo_lt2.5m}
+ggplot(county_df, aes(x = Income)) +
+        geom_histogram(aes(y = ..density..), 
+                       binwidth = 2000, color = "grey30", fill = "white") +
+        geom_density(alpha = .2, fill = "antiquewhite3")
+```
+```{r}
+# had to create a new dataframe by setting it equal to a filter from county_df
+Tot_Pop_less2.5m <- filter(county_df, county_df$TotalPop < 250000)
+summary(Tot_Pop_less2.5m)
 
+# The new histogram has less skewness toward the higher incomes meaning higher population counties were the ones with higher median incomes. 
+ggplot(Tot_Pop_less2.5m, aes(x = Income)) +
+        geom_histogram(aes(y = ..density..), 
+                       binwidth = 2000, color = "grey30", fill = "white") +
+        geom_density(alpha = .2, fill = "antiquewhite3")
 ```
 
 
