@@ -184,16 +184,29 @@ your graph has a title and good axis labels.
 Do the peninsulas 
 differ with respect to distribution of median income over the counties?
 
+Median income is quite a bit lower in the Upper Peninsula, this can be explained by the larger population, corporate concentration, and infrastructure in Southeast Michigan in the lower Peninsula.
+
 
 ```{r bp_inc_by_peninsula}
-
+ggplot(data = county_MI) + geom_boxplot(aes(y=county_MI$Income, x=county_MI$peninsula)) + labs(x="Peninsula", y="Income")
 ```
 
 Create several more boxplots showing how the peninsulas compare with respect to
 some of the other variables. Summarize your findings in a few short paragraphs.
 
-```{r more_boxplots}
+The first graph compared the number of people that identify as self employed. The median of the lower peninsula's self employed population is clearly higher than those in the upper peninsula. This higher population of self employed people in the Lower Peninsula probably enjoy some sort of supportive element that is not availible in the Upper Peninsula. 
 
+The second graph compares the poverty level between the peninsula's. Here there is less of a difference, the first quartile is the only statistic out of sync.
+
+The third graph shows the difference in average commute between the peninsula's. Here the is a great difference between the peninsulas, the lower peninsula has a comparitively high average commute. This is probably due to the location of jobs in the two geographic areas in question. The lower peninsula has a large number of economic activity in Detroit, Ann Arbor, & Lansing. While the Uper Peninsula relies on Tourism and people living and working there are more likely to live closer to where they work.
+
+The fourth graph compares unemployment between the peninsulas. Here, like the poverty graph there is very little difference between the peninsulas.
+
+```{r more_boxplots}
+ggplot(data = county_MI) + geom_boxplot(aes(y=county_MI$SelfEmployed, x=county_MI$peninsula)) + labs(x="Peninsula", y="Self Employed")
+ggplot(data = county_MI) + geom_boxplot(aes(y=county_MI$Poverty, x=county_MI$peninsula)) + labs(x="Peninsula", y="Poverty")
+ggplot(data = county_MI) + geom_boxplot(aes(y=county_MI$MeanCommute, x=county_MI$peninsula)) + labs(x="Peninsula", y="Average Commute")
+ggplot(data = county_MI) + geom_boxplot(aes(y=county_MI$Unemployment, x=county_MI$peninsula)) + labs(x="Peninsula", y="Unemployment")
 ```
 
 ### Problem 5 - How do regions of the country compare?
