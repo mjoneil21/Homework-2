@@ -43,6 +43,8 @@ for this homework assignment in your GitHub account. Periodically push your comm
 to GitHub. When done with the assignment, paste in the URL of your GitHub project
 so that I can go look at it.
 
+https://github.com/mjoneil21/Homework-2
+
 ## Step 3 - Set working directory and explore data folder
 
 Set the working directory or create an R Studio project in the current folder. You'll notice that there is a folder named **data**.
@@ -88,16 +90,19 @@ You should read the **county.csv** file into a data frame named county_df and
 **county_MI.csv** into a data frame named county_MI.
 
 ```{r read_countydata}
-# county_df <- ???
-# county_MI <- ???
+county_df <- county
+county_MI <- county_MI
 ```
 
 Check the structure of each data.frame and use the `summary` function to begin
 exploring the data. Are there any NA values? What 
 differences do you notice between the structure of the two data frames.
 
-```{r}
+We have three Na's in County_df in the Income, Income Err, & child poverty variables. There is a large size difference between the two data frames, County_df is 3142 rows in length while County_Mi is only 83 rows in length. This County Df's data will be easier to oberve statistically with such a large sample when comparing to County_MI. Other than those differences both data sets compare populations based on race, population size, transit availibility, Income, Gender, & and type of employment. 
 
+```{r}
+summary(county_df)
+summary(county_MI)
 ```
 
 The county_MI data frame contains data for Michigan only and includes an
