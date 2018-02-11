@@ -218,6 +218,9 @@ distribution of MeanCommute time. Make sure your graph has a title and good axis
 labels.
 
 ```{r faceted_histo}
+county_df$Region <- as.factor(county_df$Region)
+
+ggplot(data = county_df, aes(x=county_df$Unemployment)) + geom_histogram() + facet_wrap(~county_df$Region) + labs(x="Unemployment %", y="Number of Counties") + ggtitle("Comparing US Region by Unemployment")
 
 ```
 
