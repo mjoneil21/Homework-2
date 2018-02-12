@@ -90,8 +90,8 @@ You should read the **county.csv** file into a data frame named county_df and
 **county_MI.csv** into a data frame named county_MI.
 
 ```{r read_countydata}
-county_df <- county
-county_MI <- county_MI
+county_df <- read.csv("county.csv",TRUE,",")
+county_MI <- read.csv("county_MI.csv",TRUE,",")
 ```
 
 Check the structure of each data.frame and use the `summary` function to begin
@@ -230,7 +230,7 @@ Create a bar chart showing the number of counties by Region in the US. Make sure
 your graph has a title and good axis labels.
 
 ```{r bar_counties_by_region}
-
+ggplot(county_df, aes(county_df$Region)) + geom_bar() + labs(x="Region", y="Number of Counties") + ggtitle("Number of Counties by Region in the US") + theme(plot.title = element_text(hjust = 0.5))
 ```
 
 ### Problem 7 - Basic scatter plots
@@ -239,14 +239,14 @@ Create a scatter plot using the Michigan only data frame comparing
 Income and MeanCommute.
 
 ```{r xy_inc_commute}
-
+ggplot(county_MI, aes(x=county_MI$MeanCommute, y=county_MI$Income)) + geom_point() + ggtitle("Mean Commute Predicting Income") + theme(plot.title = element_text(hjust = 0.5))  + labs(x="Mean Commute", y="County Income")
 ```
 
 Create a modified version of the above scatter plot in which the point color
 is mapped to peninsula.
 
 ```{r xy_inc_commute_peninsula}
-
+ggplot(county_MI, aes(x=county_MI$MeanCommute, y=county_MI$Income)) + geom_point(aes(color=county_MI$peninsula)) + ggtitle("Mean Commute Predicting Income") + theme(plot.title = element_text(hjust = 0.5))  + labs(x="Mean Commute", y="County Income")
 ```
 
 Your thoughts on the relationship between these variables?
@@ -255,8 +255,12 @@ Now, create a few more scatter plots using variables of your choosing in which
 you facet by peninsula as well. How do the relationships compare across the
 peninsulas?
 
-```{r xy_faceted_peninsula}
+The first scatter plot predicts poverty through total population, there are only a few counties where this relationship would exist. Most liklely Wayne county is amoung them, otherwise the relationship is weak to nonexistant. The second graph predicts driving by mean commute time, both the UP and the LP show a weak positive relationship with increased driving to work with a greater mean commute time. This is because of the lack of other forms of viable transportation in the state. The third and final graph predicts walking to work with the level of poverty in the county. As the level of poverty increases the more likely it is that people will walk to work because of the costs or lack of other forms of travel. Though the sample size for the UP was quite small it seems that both follow the same patterns though in different intensities. 
 
+```{r xy_faceted_peninsula}
+ggplot(county_MI, aes(x=county_MI$TotalPop, y=county_MI$Poverty)) + geom_point(aes(color=county_MI$peninsula)) + ggtitle("Total Population Predicting Poverty") + theme(plot.title = element_text(hjust = 0.5))  + labs(x="Total Population", y="Poverty")
+ggplot(county_MI, aes(x=county_MI$MeanCommute, y=county_MI$Drive)) + geom_point(aes(color=county_MI$peninsula)) + ggtitle("Mean Commute Predicting Driving") + theme(plot.title = element_text(hjust = 0.5))  + labs(x="Mean Commute", y="Driving")
+ggplot(county_MI, aes(x=county_MI$Poverty, y=county_MI$Walk)) + geom_point(aes(color=county_MI$peninsula)) + ggtitle("Poverty predicting walking to work") + theme(plot.title = element_text(hjust = 0.5))  + labs(x="Poverty", y="Walking")
 ```
 
 
@@ -265,14 +269,19 @@ Now use the full US data frame.
 Create a scatter plot of TotalPop by Income.
 
 ```{r xy_pop_inc}
+ggplot(county_df, aes(x=county_df$Income, y=county_df$TotalPop)) + geom_point() + ggtitle("Predicting Total Population through Income") + theme(plot.title = element_text(hjust = 0.5))  + labs(x="Income", y="Total Population")
 
+ggplot(county_df, aes(x=log10(county_df$Income +1), y=log10(county_df$TotalPop +1))) + geom_point() + ggtitle("Predicting Total Population through Income") + theme(plot.title = element_text(hjust = 0.5))  + labs(x="Income", y="Total Population")
+```
 ```
 
 The widely varying values make this difficult to interpret in terms of looking
 for patterns. So, figure out a way to either change the axis scales or 
 the plotted data itself to use a base 10 logarithmic scale (or transform).
 Write a short paragraph on why one might want to use a log scale or log
-transform of data when plotting.
+transform of data when plotting. 
+
+One may want to log transform their data when it is severly skewed or otherwise hard to intrepret. It is very useful when making visualizations and trying to find patterns between two variables. Write a short paragraph on why one might want to use a log scale or log transform of data when plotting. In short it makes distributions look better, and easier to intrepret.
 
 ### Hacker Extra - More analysis
 
